@@ -18,7 +18,7 @@ const projects = [
   { id: 8, category: 'pergolas', title: 'Bioclimatic Pergola', image: '/images/pergola/pergola2.jpg' },
   { id: 9, category: 'pergolas', title: 'Backyard Oasis Pergola', image: '/images/pergola/pergola3.jpg' },
   { id: 10, category: 'pergolas', title: 'Louvered Pergola Installation', image: '/images/pergola/pergola4.jpg' },
-  { id: 11, category: 'pergolas', title: 'Outdoor Living Pergola', image: '/images/pergola/pergola5.png' },
+  { id: 11, category: 'pergolas', title: 'Outdoor Living Pergola', image: '/images/pergola/pergola5.webp' },
   { id: 12, category: 'pergolas', title: 'Residential Pergola System', image: '/images/pergola/pergola6.webp' },
   // Guillotine Windows (6)
   { id: 13, category: 'guillotine-windows', title: 'Restaurant Glass Enclosure', image: '/images/guillotine/guillotine1.jpg' },

@@ -236,7 +236,7 @@ const ServiceDetail = () => {
                 '/images/pergola/pergola2.jpg',
                 '/images/pergola/pergola3.jpg',
                 '/images/pergola/pergola4.jpg',
-                '/images/pergola/pergola5.png',
+                '/images/pergola/pergola5.webp',
                 '/images/pergola/pergola6.webp',
               ].map((src, index) => (
                 <div

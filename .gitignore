@@ -1,2 +1,24 @@
+# Dependencies
 node_modules
+
+# Environment (secrets – never commit)
 .env
+.env.local
+.env.*.local
+
+# Build
+dist
+build
+
+# Logs and cache
+*.log
+npm-debug.log*
+.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode
+.idea
