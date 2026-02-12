@@ -64,7 +64,7 @@ const Hero = () => {
           <div className="relative animate-slide-up">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/images/home-4k.png"
+                src="/images/home-4k.jpg"
                 alt="Outdoor patio with roll-down shutters and weather protection"
                 className="w-full h-[400px] md:h-[500px] object-cover"
               />
