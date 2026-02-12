@@ -1,20 +1,18 @@
 import { Link } from 'react-router-dom';
-import { Shield, Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { services } from '../../data/services';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-wg-navy text-white">
+    <footer className="relative z-10 overflow-hidden bg-wg-navy text-white isolate">
       <div className="container-custom section-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                <Shield className="w-6 h-6 text-wg-light" />
-              </div>
+              <img src="/images/wgs.png" alt="Weather Guard Systems" className="h-10 w-auto object-contain" />
               <div>
                 <span className="text-lg font-semibold tracking-wide">Weather Guard</span>
                 <span className="block text-xs text-wg-light tracking-wider uppercase">Systems</span>

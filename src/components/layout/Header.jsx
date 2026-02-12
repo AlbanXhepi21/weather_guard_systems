@@ -46,9 +46,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-wg-soft flex items-center justify-center">
-              <Shield className="w-6 h-6 md:w-7 md:h-7 text-wg-dark" />
-            </div>
+            <img src="/images/wgs.png" alt="Weather Guard Systems" className="h-10 w-auto md:h-12 object-contain" />
             <div className="hidden sm:block">
               <span className="text-lg md:text-xl font-semibold text-wg-navy tracking-wide">
                 Weather Guard

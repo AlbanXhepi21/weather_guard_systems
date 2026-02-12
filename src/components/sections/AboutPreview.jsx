@@ -18,8 +18,8 @@ const AboutPreview = () => {
           <div className="relative">
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"
-                alt="Professional installation team"
+                src="/images/homeabout.png"
+                alt="Weather Guard Systems"
                 className="w-full h-[400px] object-cover"
               />
             </div>

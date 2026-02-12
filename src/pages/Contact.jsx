@@ -40,20 +40,50 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+    setErrors({});
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setErrors({ submit: 'Form is not configured. Add VITE_WEB3FORMS_ACCESS_KEY to .env (get a free key at web3forms.com).' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: 'New contact form – Weather Guard Systems',
+          from_name: formData.name,
+          email: formData.email,
+          message: [
+            formData.message,
+            formData.phone && `Phone: ${formData.phone}`,
+            formData.service && `Service interest: ${formData.service}`,
+          ].filter(Boolean).join('\n\n'),
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to send');
+      }
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+    } catch (err) {
+      setErrors({ submit: err.message || 'Something went wrong. Please try again or email us directly.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses = (error) =>
@@ -187,6 +217,12 @@ const Contact = () => {
                     )}
                   </div>
 
+                  {errors.submit && (
+                    <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                      <p className="text-red-600 text-sm">{errors.submit}</p>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -271,13 +307,18 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Map Placeholder */}
-              <div className="rounded-xl overflow-hidden bg-wg-bg h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-wg-primary/50 mx-auto mb-2" />
-                  <p className="text-wg-navy/50">Map placeholder</p>
-                  <p className="text-sm text-wg-navy/40">Integrate with Google Maps API</p>
-                </div>
+              {/* Google Maps Embed */}
+              <div className="rounded-xl overflow-hidden border border-wg-border/50 max-w-md">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d897.9054636456416!2d-80.18971173044407!3d25.816046605840945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b1f63f8b2d87%3A0xd43ea8310308316f!2s123-Sys%20Networking!5e0!3m2!1sen!2s!4v1770465039999!5m2!1sen!2s"
+                  width="100%"
+                  height="280"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Weather Guard Systems location"
+                />
               </div>
             </div>
           </div>
