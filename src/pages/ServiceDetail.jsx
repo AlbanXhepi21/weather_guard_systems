@@ -88,7 +88,7 @@ const ServiceDetail = () => {
             <div className="space-y-6">
               <div className="rounded-2xl overflow-hidden shadow-xl">
                 <img
-                  src={service.heroImage}
+                  src={serviceId === 'pergolas' ? '/images/pergola/pergola6.webp' : serviceId === 'guillotine-windows' ? '/images/guillotine/guillotine6.jpg' : serviceId === 'awnings' ? '/images/awm/awm6.jpg' : serviceId === 'repairs' ? '/images/repair/repare3.webp' : serviceId === 'maintenance' ? '/images/aws-m.jpg' : service.heroImage}
                   alt={service.name}
                   className="w-full h-[300px] object-cover"
                 />
@@ -210,18 +210,120 @@ const ServiceDetail = () => {
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((num) => (
-              <div
-                key={num}
-                className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-              >
-                <img
-                  src={`https://picsum.photos/600/400?random=${serviceId}${num}`}
-                  alt={`${service.name} project ${num}`}
-                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            ))}
+            {serviceId === 'storm-shutters' ? (
+              [
+                { src: '/images/storm/stormwgs1.png', title: 'Storm Shutters Installation project 1' },
+                { src: '/images/storm/storm1.jpg', title: 'Storm Shutters Installation project 2' },
+                { src: '/images/storm/storm2.jpg', title: 'Storm Shutters Installation project 3' },
+                { src: '/images/storm/storm3.jpg', title: 'Storm Shutters Installation project 4' },
+                { src: '/images/storm/storm4.jpg', title: 'Storm Shutters Installation project 5' },
+                { src: '/images/storm/storm5.webp', title: 'Storm Shutters Installation project 6' },
+              ].map((project, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={project.src}
+                    alt={project.title}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            ) : serviceId === 'pergolas' ? (
+              [
+                '/images/pergola/pergola1.jpg',
+                '/images/pergola/pergola2.jpg',
+                '/images/pergola/pergola3.jpg',
+                '/images/pergola/pergola4.jpg',
+                '/images/pergola/pergola5.png',
+                '/images/pergola/pergola6.webp',
+              ].map((src, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={src}
+                    alt={`${service.name} project ${index + 1}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            ) : serviceId === 'guillotine-windows' ? (
+              [
+                '/images/guillotine/guillotine1.jpg',
+                '/images/guillotine/guillotine2.webp',
+                '/images/guillotine/guillotine3.jpg',
+                '/images/guillotine/guillotine4.jpg',
+                '/images/guillotine/guillotine5.webp',
+                '/images/guillotine/guillotine6.jpg',
+              ].map((src, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={src}
+                    alt={`${service.name} project ${index + 1}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            ) : serviceId === 'awnings' ? (
+              [
+                '/images/awm/awm1.jpg',
+                '/images/awm/awm2.jpg',
+                '/images/awm/awm3.jpg',
+                '/images/awm/awm4.jpg',
+                '/images/awm/awm5.jpg',
+                '/images/awm/awm6.jpg',
+              ].map((src, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={src}
+                    alt={`${service.name} project ${index + 1}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            ) : (serviceId === 'repairs' || serviceId === 'maintenance') ? (
+              [
+                '/images/repair/repare1.webp',
+                '/images/repair/repare2.jpg',
+                '/images/repair/repare3.webp',
+                '/images/repair/repare4.webp',
+                '/images/repair/repare5.jpg',
+                '/images/repair/repare6.webp',
+              ].map((src, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={src}
+                    alt={`${service.name} project ${index + 1}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            ) : (
+              [1, 2, 3, 4, 5, 6].map((num) => (
+                <div
+                  key={num}
+                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <img
+                    src={`https://picsum.photos/600/400?random=${serviceId}${num}`}
+                    alt={`${service.name} project ${num}`}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))
+            )}
           </div>
         </Container>
       </section>

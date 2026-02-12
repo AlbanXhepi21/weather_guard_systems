@@ -56,8 +56,8 @@ const About = () => {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-xl">
                 <img
-                  src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
-                  alt="Weather Guard Systems team"
+                  src="/images/aboutwgs.jpg"
+                  alt="House with Weather Guard rolling shutters"
                   className="w-full h-[400px] object-cover"
                 />
               </div>

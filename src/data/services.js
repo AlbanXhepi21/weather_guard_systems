@@ -4,7 +4,7 @@ export const services = [
     name: 'Storm Shutters Installation',
     shortDescription: 'Hurricane and storm protection for your windows and doors.',
     icon: 'Shield',
-    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80',
+    heroImage: '/images/storm/stormwgs.png',
     hasCatalog: false,
     description: `Protect your home or business with our professional storm shutter installation services. 
 Weather Guard Systems offers a complete range of hurricane-rated shutters designed to withstand 
@@ -89,7 +89,7 @@ factors. They can be controlled remotely, allowing users to respond instantly to
     name: 'Guillotine Windows Installation',
     shortDescription: 'Olympos vertical sliding glass systems for seamless indoor-outdoor transitions.',
     icon: 'Maximize2',
-    heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80',
+    heroImage: '/images/guillotine/guillotine1.jpg',
     hasCatalog: true,
     catalogUrl: '/catalogs/olympos-guillotine-glass-systems.pdf',
     catalogName: 'Olympos Guillotine Glass Systems Catalog',
@@ -140,7 +140,7 @@ surfaces, facilitating transition between indoor and outdoor environments in goo
     name: 'Awning Installation',
     shortDescription: 'Retractable and fixed awnings for shade and style.',
     icon: 'Umbrella',
-    heroImage: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1920&q=80',
+    heroImage: '/images/awm/awm1.jpg',
     hasCatalog: false,
     description: `Add comfort, style, and energy efficiency to your outdoor spaces with Weather Guard 
 Systems' premium awning installations. Our awnings provide perfect shade while protecting your 
@@ -169,7 +169,7 @@ awning solution.`,
     name: 'Service & Repair',
     shortDescription: 'Expert repair and service for all our products.',
     icon: 'Wrench',
-    heroImage: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80',
+    heroImage: '/images/repair/repare1.webp',
     hasCatalog: false,
     description: `Keep your Weather Guard Systems products in perfect working condition with our 
 professional service and repair solutions. Our certified technicians are trained on all Kenan Metal 
@@ -198,7 +198,7 @@ genuine parts for all repairs.`,
     name: 'Annual Maintenance',
     shortDescription: 'Yearly cleaning and maintenance packages.',
     icon: 'Calendar',
-    heroImage: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1920&q=80',
+    heroImage: '/images/repair/repare1.webp',
     hasCatalog: false,
     description: `Protect your investment with Weather Guard Systems' comprehensive annual maintenance 
 packages. Regular professional servicing ensures optimal performance, extends product lifespan, 
