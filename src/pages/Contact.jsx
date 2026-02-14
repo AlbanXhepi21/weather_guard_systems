@@ -100,15 +100,15 @@ const Contact = () => {
         subtitle="Get in touch with our team for a free consultation and quote."
       />
 
-      <section className="section-padding bg-white">
+      <section className="py-8 sm:py-10 md:py-12 bg-white">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-10">
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl font-bold text-wg-navy mb-6">Send Us a Message</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-wg-navy mb-4">Send Us a Message</h2>
 
               {isSubmitted ? (
-                <Card hover={false} className="text-center py-12">
+                <Card hover={false} className="text-center py-8 sm:py-10">
                   <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
@@ -126,7 +126,7 @@ const Contact = () => {
                   </button>
                 </Card>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-wg-navy mb-2">
                       Full Name *
@@ -246,9 +246,9 @@ const Contact = () => {
 
             {/* Contact Information */}
             <div>
-              <h2 className="text-2xl font-bold text-wg-navy mb-6">Contact Information</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-wg-navy mb-4">Contact Information</h2>
 
-              <div className="space-y-6 mb-8">
+              <div className="space-y-5 mb-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-wg-bg flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-6 h-6 text-wg-primary" />

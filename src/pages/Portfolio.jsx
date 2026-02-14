@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import PageHero from '../components/ui/PageHero';
 import Container from '../components/ui/Container';
 import CTABanner from '../components/sections/CTABanner';
@@ -18,7 +18,7 @@ const projects = [
   { id: 8, category: 'pergolas', title: 'Bioclimatic Pergola', image: '/images/pergola/pergola2.jpg' },
   { id: 9, category: 'pergolas', title: 'Backyard Oasis Pergola', image: '/images/pergola/pergola3.jpg' },
   { id: 10, category: 'pergolas', title: 'Louvered Pergola Installation', image: '/images/pergola/pergola4.jpg' },
-  { id: 11, category: 'pergolas', title: 'Outdoor Living Pergola', image: '/images/pergola/pergola5.png' },
+  { id: 11, category: 'pergolas', title: 'Outdoor Living Pergola', image: '/images/pergola/pergola5.webp' },
   { id: 12, category: 'pergolas', title: 'Residential Pergola System', image: '/images/pergola/pergola6.webp' },
   // Guillotine Windows (6)
   { id: 13, category: 'guillotine-windows', title: 'Restaurant Glass Enclosure', image: '/images/guillotine/guillotine1.jpg' },
@@ -49,6 +49,35 @@ const Portfolio = () => {
     ? projects
     : projects.filter(p => p.category === activeCategory);
 
+  const currentIndex = selectedProject
+    ? filteredProjects.findIndex((p) => p.id === selectedProject.id)
+    : -1;
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex >= 0 && currentIndex < filteredProjects.length - 1;
+
+  const goPrev = (e) => {
+    e?.stopPropagation();
+    if (!hasPrev) return;
+    setSelectedProject(filteredProjects[currentIndex - 1]);
+  };
+  const goNext = (e) => {
+    e?.stopPropagation();
+    if (!hasNext) return;
+    setSelectedProject(filteredProjects[currentIndex + 1]);
+  };
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!selectedProject) return;
+      const idx = filteredProjects.findIndex((p) => p.id === selectedProject.id);
+      if (e.key === 'ArrowLeft' && idx > 0) setSelectedProject(filteredProjects[idx - 1]);
+      if (e.key === 'ArrowRight' && idx < filteredProjects.length - 1) setSelectedProject(filteredProjects[idx + 1]);
+      if (e.key === 'Escape') setSelectedProject(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [selectedProject, filteredProjects]);
+
   return (
     <>
       <PageHero
@@ -56,10 +85,10 @@ const Portfolio = () => {
         subtitle="Browse through our completed projects and see the quality of our work."
       />
 
-      <section className="section-padding bg-white">
+      <section className="py-8 sm:py-10 md:py-12 bg-white">
         <Container>
           {/* Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-3 mb-6 sm:mb-8">
             {categories.map((category) => (
               <button
                 key={category.id}
@@ -76,7 +105,7 @@ const Portfolio = () => {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
@@ -107,19 +136,39 @@ const Portfolio = () => {
         </Container>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with Next/Previous */}
       {selectedProject && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setSelectedProject(null)}
         >
           <button
-            className="absolute top-4 right-4 text-white hover:text-wg-light transition-colors"
+            className="absolute top-4 right-4 z-10 text-white hover:text-wg-light transition-colors p-1"
             onClick={() => setSelectedProject(null)}
+            aria-label="Close"
           >
             <X className="w-8 h-8" />
           </button>
-          
+
+          {hasPrev && (
+            <button
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              onClick={goPrev}
+              aria-label="Previous project"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+          )}
+          {hasNext && (
+            <button
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              onClick={goNext}
+              aria-label="Next project"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+          )}
+
           <div
             className="max-w-4xl w-full"
             onClick={(e) => e.stopPropagation()}
@@ -133,6 +182,9 @@ const Portfolio = () => {
               <h3 className="text-white text-xl font-semibold">{selectedProject.title}</h3>
               <p className="text-white/70">
                 {categories.find(c => c.id === selectedProject.category)?.name}
+              </p>
+              <p className="text-white/50 text-sm mt-1">
+                {currentIndex + 1} / {filteredProjects.length}
               </p>
             </div>
           </div>

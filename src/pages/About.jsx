@@ -30,11 +30,11 @@ const About = () => {
       />
 
       {/* Company Story */}
-      <section className="section-padding bg-white">
+      <section className="py-8 sm:py-10 md:py-12 bg-white">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-wg-navy mb-6">Our Story</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-wg-navy mb-4">Our Story</h2>
               <p className="text-wg-navy/70 mb-4 leading-relaxed">
                 Weather Guard Systems was founded with a simple mission: to provide homeowners 
                 and businesses with the highest quality storm protection and outdoor living 
@@ -58,7 +58,7 @@ const About = () => {
                 <img
                   src="/images/aboutwgs.jpg"
                   alt="House with Weather Guard rolling shutters"
-                  className="w-full h-[400px] object-cover"
+                  className="w-full h-[280px] sm:h-[340px] md:h-[400px] object-cover"
                 />
               </div>
             </div>
@@ -67,12 +67,12 @@ const About = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-12 bg-wg-bg">
+      <section className="py-8 md:py-10 bg-wg-bg">
         <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-wg-dark mb-2">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-wg-dark mb-1 sm:mb-2">
                   {stat.number}
                 </div>
                 <div className="text-wg-navy/70">{stat.label}</div>
@@ -83,14 +83,14 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="section-padding bg-white">
+      <section className="py-8 sm:py-10 md:py-12 bg-white">
         <Container>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-wg-bg rounded-2xl p-8">
-              <div className="w-14 h-14 rounded-xl bg-wg-primary flex items-center justify-center mb-4">
-                <Target className="w-7 h-7 text-white" />
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+            <div className="bg-wg-bg rounded-2xl p-6 sm:p-8">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-wg-primary flex items-center justify-center mb-3 sm:mb-4">
+                <Target className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-wg-navy mb-4">Our Mission</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-wg-navy mb-3">Our Mission</h3>
               <p className="text-wg-navy/70 leading-relaxed">
                 To provide exceptional storm protection and outdoor living solutions that 
                 safeguard properties and enhance quality of life. We are committed to 
@@ -99,11 +99,11 @@ const About = () => {
               </p>
             </div>
 
-            <div className="bg-wg-bg rounded-2xl p-8">
-              <div className="w-14 h-14 rounded-xl bg-wg-primary flex items-center justify-center mb-4">
-                <Eye className="w-7 h-7 text-white" />
+            <div className="bg-wg-bg rounded-2xl p-6 sm:p-8">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-wg-primary flex items-center justify-center mb-3 sm:mb-4">
+                <Eye className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-wg-navy mb-4">Our Vision</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-wg-navy mb-3">Our Vision</h3>
               <p className="text-wg-navy/70 leading-relaxed">
                 To be the leading provider of storm protection and outdoor living systems, 
                 recognized for our innovation, reliability, and unwavering commitment to 
@@ -116,7 +116,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="section-padding bg-wg-bg">
+      <section className="py-8 sm:py-10 md:py-12 bg-wg-bg">
         <Container>
           <SectionHeading
             title="Our Values"
@@ -124,9 +124,9 @@ const About = () => {
           />
 
           <div className="max-w-3xl mx-auto">
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               {values.map((value, index) => (
-                <div key={index} className="flex items-start gap-3 bg-white rounded-lg p-4">
+                <div key={index} className="flex items-start gap-3 bg-white rounded-lg p-3 sm:p-4">
                   <CheckCircle className="w-5 h-5 text-wg-primary flex-shrink-0 mt-0.5" />
                   <span className="text-wg-navy">{value}</span>
                 </div>
