@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { ArrowRight, Shield, Home, Maximize2, Umbrella, Wrench, Calendar } from 'lucide-react';
+import { ArrowRight, Shield, Home, Maximize2, Umbrella, Wrench, Calendar, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
 import Card from '../components/ui/Card';
@@ -22,10 +23,49 @@ const serviceIconMap = {
   Calendar
 };
 
+function getGalleryImages(serviceId) {
+  if (serviceId === 'storm-shutters') {
+    return [
+      '/images/storm/stormwgs1.png',
+      '/images/storm/storm1.jpg',
+      '/images/storm/storm2.jpg',
+      '/images/storm/storm3.jpg',
+      '/images/storm/storm4.jpg',
+      '/images/storm/storm5.webp',
+    ];
+  }
+  if (serviceId === 'pergolas') {
+    return ['/images/pergola/pergola1.jpg', '/images/pergola/pergola2.jpg', '/images/pergola/pergola3.jpg', '/images/pergola/pergola4.jpg', '/images/pergola/pergola5.webp', '/images/pergola/pergola6.webp'];
+  }
+  if (serviceId === 'guillotine-windows') {
+    return ['/images/guillotine/guillotine1.jpg', '/images/guillotine/guillotine2.webp', '/images/guillotine/guillotine3.jpg', '/images/guillotine/guillotine4.jpg', '/images/guillotine/guillotine5.webp', '/images/guillotine/guillotine6.jpg'];
+  }
+  if (serviceId === 'awnings') {
+    return ['/images/awm/awm1.jpg', '/images/awm/awm2.jpg', '/images/awm/awm3.jpg', '/images/awm/awm4.jpg', '/images/awm/awm5.jpg', '/images/awm/awm6.jpg'];
+  }
+  if (serviceId === 'repairs' || serviceId === 'maintenance') {
+    return ['/images/repair/repare1.webp', '/images/repair/repare2.jpg', '/images/repair/repare3.webp', '/images/repair/repare4.webp', '/images/repair/repare5.jpg', '/images/repair/repare6.webp'];
+  }
+  return [1, 2, 3, 4, 5, 6].map((num) => `https://picsum.photos/600/400?random=${serviceId}${num}`);
+}
+
 const ServiceDetail = () => {
   const { serviceId } = useParams();
   const service = getServiceById(serviceId);
   const relatedServices = getRelatedServices(serviceId);
+  const galleryImages = service ? getGalleryImages(serviceId) : [];
+  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
+
+  useEffect(() => {
+    if (galleryLightboxIndex == null) return;
+    const handleKey = (e) => {
+      if (e.key === 'ArrowLeft' && galleryLightboxIndex > 0) setGalleryLightboxIndex((i) => i - 1);
+      if (e.key === 'ArrowRight' && galleryLightboxIndex < galleryImages.length - 1) setGalleryLightboxIndex((i) => i + 1);
+      if (e.key === 'Escape') setGalleryLightboxIndex(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [galleryLightboxIndex, galleryImages.length]);
 
   if (!service) {
     return <Navigate to="/services" replace />;
@@ -36,14 +76,14 @@ const ServiceDetail = () => {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-soft py-16 md:py-24">
+      <section className="relative bg-gradient-soft py-10 sm:py-12 md:py-16 lg:py-24">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-10"
           style={{ backgroundImage: `url(${service.heroImage})` }}
         />
         <Container className="relative z-10">
           <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
               <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm">
                 {ServiceIcon && <ServiceIcon className="w-5 h-5 text-wg-primary" />}
                 <span className="text-sm font-medium text-wg-navy">Service</span>
@@ -54,10 +94,10 @@ const ServiceDetail = () => {
                 </div>
               )}
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-wg-navy mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-wg-navy mb-3 md:mb-4">
               {service.name}
             </h1>
-            <p className="text-lg text-wg-navy/70">
+            <p className="text-base sm:text-lg text-wg-navy/70 leading-snug">
               {service.shortDescription}
             </p>
           </div>
@@ -210,123 +250,75 @@ const ServiceDetail = () => {
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {serviceId === 'storm-shutters' ? (
-              [
-                { src: '/images/storm/stormwgs1.png', title: 'Storm Shutters Installation project 1' },
-                { src: '/images/storm/storm1.jpg', title: 'Storm Shutters Installation project 2' },
-                { src: '/images/storm/storm2.jpg', title: 'Storm Shutters Installation project 3' },
-                { src: '/images/storm/storm3.jpg', title: 'Storm Shutters Installation project 4' },
-                { src: '/images/storm/storm4.jpg', title: 'Storm Shutters Installation project 5' },
-                { src: '/images/storm/storm5.webp', title: 'Storm Shutters Installation project 6' },
-              ].map((project, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={project.src}
-                    alt={project.title}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            ) : serviceId === 'pergolas' ? (
-              [
-                '/images/pergola/pergola1.jpg',
-                '/images/pergola/pergola2.jpg',
-                '/images/pergola/pergola3.jpg',
-                '/images/pergola/pergola4.jpg',
-                '/images/pergola/pergola5.webp',
-                '/images/pergola/pergola6.webp',
-              ].map((src, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={src}
-                    alt={`${service.name} project ${index + 1}`}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            ) : serviceId === 'guillotine-windows' ? (
-              [
-                '/images/guillotine/guillotine1.jpg',
-                '/images/guillotine/guillotine2.webp',
-                '/images/guillotine/guillotine3.jpg',
-                '/images/guillotine/guillotine4.jpg',
-                '/images/guillotine/guillotine5.webp',
-                '/images/guillotine/guillotine6.jpg',
-              ].map((src, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={src}
-                    alt={`${service.name} project ${index + 1}`}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            ) : serviceId === 'awnings' ? (
-              [
-                '/images/awm/awm1.jpg',
-                '/images/awm/awm2.jpg',
-                '/images/awm/awm3.jpg',
-                '/images/awm/awm4.jpg',
-                '/images/awm/awm5.jpg',
-                '/images/awm/awm6.jpg',
-              ].map((src, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={src}
-                    alt={`${service.name} project ${index + 1}`}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            ) : (serviceId === 'repairs' || serviceId === 'maintenance') ? (
-              [
-                '/images/repair/repare1.webp',
-                '/images/repair/repare2.jpg',
-                '/images/repair/repare3.webp',
-                '/images/repair/repare4.webp',
-                '/images/repair/repare5.jpg',
-                '/images/repair/repare6.webp',
-              ].map((src, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={src}
-                    alt={`${service.name} project ${index + 1}`}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            ) : (
-              [1, 2, 3, 4, 5, 6].map((num) => (
-                <div
-                  key={num}
-                  className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <img
-                    src={`https://picsum.photos/600/400?random=${serviceId}${num}`}
-                    alt={`${service.name} project ${num}`}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))
-            )}
+            {galleryImages.map((src, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setGalleryLightboxIndex(index)}
+                className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 text-left focus:outline-none focus:ring-2 focus:ring-wg-primary focus:ring-offset-2"
+              >
+                <img
+                  src={typeof src === 'string' ? src : `https://picsum.photos/600/400?random=${serviceId}${src}`}
+                  alt={`${service.name} project ${index + 1}`}
+                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </button>
+            ))}
           </div>
         </Container>
       </section>
+
+      {/* Gallery Lightbox – prev/next like Portfolio */}
+      {galleryLightboxIndex != null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setGalleryLightboxIndex(null)}
+        >
+          <button
+            type="button"
+            className="absolute top-4 right-4 z-10 text-white hover:text-wg-light transition-colors p-1"
+            onClick={() => setGalleryLightboxIndex(null)}
+            aria-label="Close"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          {galleryLightboxIndex > 0 && (
+            <button
+              type="button"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              onClick={(e) => { e.stopPropagation(); setGalleryLightboxIndex((i) => i - 1); }}
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+          )}
+          {galleryLightboxIndex < galleryImages.length - 1 && (
+            <button
+              type="button"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              onClick={(e) => { e.stopPropagation(); setGalleryLightboxIndex((i) => i + 1); }}
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+          )}
+          <div
+            className="max-w-4xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={typeof galleryImages[galleryLightboxIndex] === 'string'
+                ? galleryImages[galleryLightboxIndex]
+                : `https://picsum.photos/600/400?random=${serviceId}${galleryImages[galleryLightboxIndex]}`}
+              alt={`${service.name} project ${galleryLightboxIndex + 1}`}
+              className="w-full rounded-lg"
+            />
+            <p className="text-white/50 text-sm mt-2 text-center">
+              {galleryLightboxIndex + 1} / {galleryImages.length}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Related Services */}
       <section className="section-padding bg-white">
@@ -354,7 +346,7 @@ const ServiceDetail = () => {
                     {relatedService.shortDescription}
                   </p>
                   <Link
-                    to={`/services/${relatedService.id}`}
+                    to={`/products/${relatedService.id}`}
                     className="inline-flex items-center gap-2 text-wg-primary font-medium text-sm
                              hover:text-wg-dark transition-colors duration-200 group/link"
                   >

@@ -9,14 +9,14 @@ const CTABanner = ({
   buttonLink = "/contact"
 }) => {
   return (
-    <section className="bg-gradient-teal py-16 md:py-20">
+    <section className="bg-gradient-teal py-10 sm:py-12 md:py-16 lg:py-20">
       <Container>
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 md:mb-4">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-white/80 text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto leading-snug">
               {subtitle}
             </p>
           )}

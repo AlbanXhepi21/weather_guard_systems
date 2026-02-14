@@ -169,7 +169,7 @@ awning solution.`,
     name: 'Service & Repair',
     shortDescription: 'Expert repair and service for all our products.',
     icon: 'Wrench',
-    heroImage: '/images/repair/repare1.webp',
+    heroImage: '/images/repair/repare3.webp',
     hasCatalog: false,
     description: `Keep your Weather Guard Systems products in perfect working condition with our 
 professional service and repair solutions. Our certified technicians are trained on all Kenan Metal 
@@ -198,7 +198,7 @@ genuine parts for all repairs.`,
     name: 'Annual Maintenance',
     shortDescription: 'Yearly cleaning and maintenance packages.',
     icon: 'Calendar',
-    heroImage: '/images/repair/repare1.webp',
+    heroImage: '/images/aws-m.jpg',
     hasCatalog: false,
     description: `Protect your investment with Weather Guard Systems' comprehensive annual maintenance 
 packages. Regular professional servicing ensures optimal performance, extends product lifespan, 
