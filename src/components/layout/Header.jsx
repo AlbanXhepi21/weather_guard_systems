@@ -15,6 +15,7 @@ const iconMap = {
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
@@ -29,7 +30,14 @@ const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
     setIsProductsOpen(false);
+    setIsServicesOpen(false);
   }, [location]);
+
+  const servicesMenuItems = [
+    { to: '/services', label: 'Our Services', icon: 'Shield' },
+    { to: '/products/repairs', label: 'Service & Repair', icon: 'Wrench' },
+    { to: '/products/maintenance', label: 'Annual Maintenance', icon: 'Calendar' },
+  ];
 
   const navLinkClass = ({ isActive }) =>
     `text-sm font-medium transition-colors duration-200 ${
@@ -87,7 +95,7 @@ const Header = () => {
                 onMouseLeave={() => setIsProductsOpen(false)}
               >
                 <div className="p-2">
-                  {services.map((service) => {
+                  {services.filter((s) => s.id !== 'repairs' && s.id !== 'maintenance').map((service) => {
                     const IconComponent = iconMap[service.icon];
                     return (
                       <Link
@@ -96,7 +104,7 @@ const Header = () => {
                         className="flex items-center gap-3 p-3 rounded-lg hover:bg-wg-bg transition-colors duration-200"
                       >
                         {IconComponent && <IconComponent className="w-5 h-5 text-wg-primary" />}
-                        <span className="text-sm text-wg-navy">{service.name}</span>
+                        <span className="text-sm text-wg-navy">{service.name.replace(' Installation', '')}</span>
                       </Link>
                     );
                   })}
@@ -112,9 +120,41 @@ const Header = () => {
               </div>
             </div>
 
-            <NavLink to="/services" className={navLinkClass}>
-              Services
-            </NavLink>
+            {/* Services Dropdown */}
+            <div className="relative">
+              <button
+                className={`flex items-center gap-1 text-sm font-medium transition-colors duration-200 ${navLinkClass({ isActive: location.pathname === '/services' || location.pathname === '/products/repairs' || location.pathname === '/products/maintenance' })}`}
+                onMouseEnter={() => setIsServicesOpen(true)}
+                onMouseLeave={() => setIsServicesOpen(false)}
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+              >
+                Services
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <div
+                className={`absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-wg-border/50 transition-all duration-200 ${
+                  isServicesOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                }`}
+                onMouseEnter={() => setIsServicesOpen(true)}
+                onMouseLeave={() => setIsServicesOpen(false)}
+              >
+                <div className="p-2">
+                  {servicesMenuItems.map((item) => {
+                    const IconComponent = iconMap[item.icon];
+                    return (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-wg-bg transition-colors duration-200"
+                      >
+                        {IconComponent && <IconComponent className="w-5 h-5 text-wg-primary" />}
+                        <span className="text-sm text-wg-navy">{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
             <NavLink to="/portfolio" className={navLinkClass}>
               Portfolio
             </NavLink>
@@ -166,7 +206,7 @@ const Header = () => {
             </button>
             <div className={`overflow-hidden transition-all duration-300 ${isProductsOpen ? 'max-h-96' : 'max-h-0'}`}>
               <div className="pl-4 py-2 flex flex-col gap-2">
-                {services.map((service) => {
+                {services.filter((s) => s.id !== 'repairs' && s.id !== 'maintenance').map((service) => {
                   const IconComponent = iconMap[service.icon];
                   return (
                     <Link
@@ -175,7 +215,7 @@ const Header = () => {
                       className="flex items-center gap-3 py-2 text-wg-navy/80"
                     >
                       {IconComponent && <IconComponent className="w-4 h-4 text-wg-primary" />}
-                      <span className="text-sm">{service.name}</span>
+                      <span className="text-sm">{service.name.replace(' Installation', '')}</span>
                     </Link>
                   );
                 })}
@@ -183,9 +223,37 @@ const Header = () => {
             </div>
           </div>
 
-          <NavLink to="/services" className={({ isActive }) => `text-base font-medium py-2.5 ${isActive ? 'text-wg-primary' : 'text-wg-navy'}`}>
-            Services
-          </NavLink>
+          {/* Mobile Services Accordion */}
+          <div>
+            <button
+              className={`flex items-center justify-between w-full text-base font-medium py-2.5 ${
+                location.pathname === '/services' || location.pathname === '/products/repairs' || location.pathname === '/products/maintenance'
+                  ? 'text-wg-primary'
+                  : 'text-wg-navy'
+              }`}
+              onClick={() => setIsServicesOpen(!isServicesOpen)}
+            >
+              Services
+              <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${isServicesOpen ? 'max-h-96' : 'max-h-0'}`}>
+              <div className="pl-4 py-2 flex flex-col gap-2">
+                {servicesMenuItems.map((item) => {
+                  const IconComponent = iconMap[item.icon];
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className="flex items-center gap-3 py-2 text-wg-navy/80"
+                    >
+                      {IconComponent && <IconComponent className="w-4 h-4 text-wg-primary" />}
+                      <span className="text-sm">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
           <NavLink to="/portfolio" className={({ isActive }) => `text-base font-medium py-2.5 ${isActive ? 'text-wg-primary' : 'text-wg-navy'}`}>
             Portfolio
           </NavLink>

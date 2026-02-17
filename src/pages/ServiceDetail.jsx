@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowRight, Shield, Home, Maximize2, Umbrella, Wrench, Calendar, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Container from '../components/ui/Container';
@@ -49,12 +49,31 @@ function getGalleryImages(serviceId) {
   return [1, 2, 3, 4, 5, 6].map((num) => `https://picsum.photos/600/400?random=${serviceId}${num}`);
 }
 
+const HERO_SLIDE_DURATION_MS = 5000;
+
 const ServiceDetail = () => {
   const { serviceId } = useParams();
   const service = getServiceById(serviceId);
   const relatedServices = getRelatedServices(serviceId);
   const galleryImages = service ? getGalleryImages(serviceId) : [];
+  const heroSlides = galleryImages.slice(0, 4).filter((src) => typeof src === 'string');
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
   const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
+
+  const heroNext = useCallback(() => {
+    setHeroIndex((i) => (i + 1) % Math.max(1, heroSlides.length));
+  }, [heroSlides.length]);
+  const heroPrev = useCallback(() => {
+    setHeroIndex((i) => (i - 1 + heroSlides.length) % Math.max(1, heroSlides.length));
+  }, [heroSlides.length]);
+
+  useEffect(() => {
+    if (heroSlides.length < 2) return;
+    const t = setInterval(heroNext, HERO_SLIDE_DURATION_MS);
+    return () => clearInterval(t);
+  }, [heroSlides.length, heroNext]);
 
   useEffect(() => {
     if (galleryLightboxIndex == null) return;
@@ -67,6 +86,16 @@ const ServiceDetail = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, [galleryLightboxIndex, galleryImages.length]);
 
+  const onHeroTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
+  const onHeroTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+  const onHeroTouchEnd = () => {
+    if (touchStart == null || touchEnd == null || heroSlides.length < 2) return;
+    const d = touchStart - touchEnd;
+    if (Math.abs(d) > 50) d > 0 ? heroNext() : heroPrev();
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   if (!service) {
     return <Navigate to="/services" replace />;
   }
@@ -75,33 +104,90 @@ const ServiceDetail = () => {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-gradient-soft py-10 sm:py-12 md:py-16 lg:py-24">
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: `url(${service.heroImage})` }}
-        />
-        <Container className="relative z-10">
-          <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-              <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm">
-                {ServiceIcon && <ServiceIcon className="w-5 h-5 text-wg-primary" />}
-                <span className="text-sm font-medium text-wg-navy">Service</span>
-              </div>
-              {service.manufacturer && (
-                <div className="inline-flex items-center gap-2 bg-wg-primary/10 rounded-full px-4 py-2">
-                  <span className="text-sm font-medium text-wg-dark">By {service.manufacturer}</span>
-                </div>
-              )}
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-wg-navy mb-3 md:mb-4">
-              {service.name}
-            </h1>
-            <p className="text-base sm:text-lg text-wg-navy/70 leading-snug">
-              {service.shortDescription}
-            </p>
+      {/* Hero: sliding photo background + compact text strip (readable on mobile & desktop) */}
+      <section
+        className="relative min-h-[45vh] sm:min-h-[50vh] md:min-h-[55vh] flex flex-col justify-end overflow-hidden"
+        onTouchStart={onHeroTouchStart}
+        onTouchMove={onHeroTouchMove}
+        onTouchEnd={onHeroTouchEnd}
+      >
+        {heroSlides.length > 0 ? (
+          heroSlides.map((src, i) => (
+            <div
+              key={src}
+              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
+                i === heroIndex ? 'opacity-100 z-0' : 'opacity-0 z-0'
+              }`}
+              style={{ backgroundImage: `url(${src})` }}
+              aria-hidden={i !== heroIndex}
+            />
+          ))
+        ) : (
+          <div
+            className="absolute inset-0 bg-cover bg-center z-0"
+            style={{ backgroundImage: `url(${service.heroImage})` }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-wg-navy/95 via-wg-navy/50 to-wg-navy/30 z-[1]" />
+        {/* Tap zones (left/right edges) for slide navigation — stops above the title strip */}
+        {heroSlides.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={heroPrev}
+              className="absolute left-0 top-0 bottom-44 sm:bottom-48 md:bottom-52 w-16 z-20 bg-transparent"
+              aria-label="Previous photo"
+            />
+            <button
+              type="button"
+              onClick={heroNext}
+              className="absolute right-0 top-0 bottom-44 sm:bottom-48 md:bottom-52 w-16 z-20 bg-transparent"
+              aria-label="Next photo"
+            />
+          </>
+        )}
+        {/* Slide indicator: top-right so it doesn't overlap title strip */}
+        {heroSlides.length > 1 && (
+          <div className="absolute top-5 right-5 sm:top-6 sm:right-6 z-10 flex items-center gap-1.5" aria-label="Slide indicator">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setHeroIndex(i)}
+                className={`block rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/80 focus:ring-offset-2 focus:ring-offset-wg-navy/30 ${
+                  i === heroIndex
+                    ? 'w-2.5 h-2.5 bg-white shadow-sm'
+                    : 'w-2 h-2 bg-white/50 hover:bg-white/70'
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === heroIndex ? 'true' : undefined}
+              />
+            ))}
           </div>
-        </Container>
+        )}
+        <div className="relative z-10 w-full py-8 sm:py-10 md:py-12">
+          <Container>
+            <div className="max-w-3xl">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 text-white text-xs font-medium">
+                  {ServiceIcon && <ServiceIcon className="w-3.5 h-3.5" />}
+                  Product
+                </span>
+                {service.manufacturer && (
+                  <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 text-white/90 text-xs font-medium">
+                    By {service.manufacturer}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-sm">
+                {service.name}
+              </h1>
+              <p className="text-sm sm:text-base text-white/90 max-w-xl leading-snug drop-shadow-sm">
+                {service.shortDescription}
+              </p>
+            </div>
+          </Container>
+        </div>
       </section>
 
       {/* Service Description */}
